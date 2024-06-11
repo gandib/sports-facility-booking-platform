@@ -9,7 +9,7 @@ import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/appError';
-import AuthError from '../errors/authError';
+import AuthError from '../errors/AuthError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   // SETTING DEFAULT VALUES
