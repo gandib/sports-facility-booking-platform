@@ -1,4 +1,4 @@
-import { TErrorSources } from '../interface/error';
+import { TErrorMessages } from '../interface/error';
 
 const handleDuplicateError = (error: any) => {
   // Extract value within double qoutes using regex
@@ -6,7 +6,7 @@ const handleDuplicateError = (error: any) => {
   // The extracted value will be in the first capturing group
   const extractedMessage = match && match[1];
 
-  const errorSources: TErrorSources = [
+  const errorMessages: TErrorMessages = [
     {
       path: '',
       message: `${extractedMessage} is already exist!`,
@@ -16,7 +16,7 @@ const handleDuplicateError = (error: any) => {
   return {
     statusCode,
     message: `${extractedMessage} is already exist!`,
-    errorSources,
+    errorMessages,
   };
 };
 

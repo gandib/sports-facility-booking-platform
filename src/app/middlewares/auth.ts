@@ -5,7 +5,7 @@ import catchAsync from '../utils/catchAsync';
 import config from '../config';
 import { TUserRole } from '../modules/User/user.interface';
 import { User } from '../modules/User/user.model';
-import authError from './authError';
+import AuthError from '../errors/authError';
 
 const auth = (...requiredRole: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
@@ -13,7 +13,10 @@ const auth = (...requiredRole: TUserRole[]) => {
 
     // if token is sent from the client
     if (!token) {
-      return authError(req, res);
+      throw new AuthError(
+        httpStatus.UNAUTHORIZED,
+        'You have no access to this route',
+      );
     }
 
     // check if the token is valid
@@ -32,7 +35,10 @@ const auth = (...requiredRole: TUserRole[]) => {
     }
 
     if (requiredRole && !requiredRole.includes(role)) {
-      return authError(req, res);
+      throw new AuthError(
+        httpStatus.UNAUTHORIZED,
+        'You have no access to this route',
+      );
     }
 
     req.user = decoded as JwtPayload;
