@@ -3,7 +3,7 @@ import { TBooking } from './booking.interface';
 import { isBooked } from './booking.constant';
 
 const bookingSchema = new Schema<TBooking>({
-  date: { type: Date, required: [true, 'Date is required!'] },
+  date: { type: String, required: [true, 'Date is required!'] },
   startTime: { type: String, required: [true, 'Start time is required!'] },
   endTime: { type: String, required: [true, 'End time is required!'] },
   user: {

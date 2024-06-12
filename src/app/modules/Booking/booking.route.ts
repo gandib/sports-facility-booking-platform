@@ -9,8 +9,14 @@ const router = express.Router();
 router.post(
   '/',
   auth('user'),
-  //   validateRequest(bookingValidations.createBookingValidationSchema),
+  validateRequest(bookingValidations.createBookingValidationSchema),
   bookingControllers.createBooking,
 );
+
+router.get('/', auth('admin'), bookingControllers.getAllBookings);
+
+router.get('/user', auth('user'), bookingControllers.getAllBookingsByUser);
+
+router.delete('/:id', auth('user'), bookingControllers.deleteBooking);
 
 export const bookingRoutes = router;

@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 export type TIsBooked = 'confirmed' | 'unconfirmed' | 'canceled';
 
 export type TBooking = {
-  date: Date;
+  date: string;
   startTime: string;
   endTime: string;
   user: Types.ObjectId;

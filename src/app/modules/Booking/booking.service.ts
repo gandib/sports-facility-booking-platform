@@ -36,6 +36,48 @@ const createBooking = async (user: JwtPayload, payload: TBooking) => {
   return result;
 };
 
+const getAllBookings = async () => {
+  const result = await Booking.find().populate('facility').populate('user');
+
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
+  return result;
+};
+
+const getAllBookingsByUser = async (user: JwtPayload) => {
+  const userData = await User.findOne({ email: user?.email }).select('_id');
+  console.log(userData);
+  const result = await Booking.find({ user: userData?._id }).populate(
+    'facility',
+  );
+  console.log(result);
+
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
+  return result;
+};
+
+const deleteBooking = async (id: string) => {
+  const result = await Booking.findByIdAndUpdate(
+    id,
+    { isBooked: 'canceled' },
+    { new: true },
+  ).populate('facility');
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
+  return result;
+};
+
 export const bookingServices = {
   createBooking,
+  getAllBookings,
+  getAllBookingsByUser,
+  deleteBooking,
 };
