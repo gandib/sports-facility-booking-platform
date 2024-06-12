@@ -6,7 +6,9 @@ import AppError from '../../errors/appError';
 import config from '../../config';
 
 const createUser = async (payload: TUser) => {
-  const result = await User.create(payload);
+  const user = await User.create(payload);
+  const result = await User.findById(user?._id).select('-password');
+
   return result;
 };
 

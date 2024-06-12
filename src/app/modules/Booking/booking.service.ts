@@ -41,11 +41,11 @@ const createBooking = async (user: JwtPayload, payload: TBooking) => {
     );
   }
 
-  const sTime = new Date(`1970-01-01T${payload?.startTime}:00`);
-  const eTime = new Date(`1970-01-01T${payload?.endTime}:00`);
+  const sTime: unknown = new Date(`1970-01-01T${payload?.startTime}:00`);
+  const eTime: unknown = new Date(`1970-01-01T${payload?.endTime}:00`);
 
-  const startTimeParse = Date.parse(sTime);
-  const endTimeParse = Date.parse(eTime);
+  const startTimeParse = Date.parse(sTime as string);
+  const endTimeParse = Date.parse(eTime as string);
 
   // add user id
   payload.user = userData?._id;
@@ -120,7 +120,7 @@ const checkAvailability = async (date: string) => {
   );
 
   const isSlotAvailable = (slot: TTotalSlots) => {
-    for (let booking of bookedSlots) {
+    for (const booking of bookedSlots) {
       if (
         slot.startTime <= booking.startTime &&
         slot.endTime >= booking.endTime

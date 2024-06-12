@@ -39,7 +39,7 @@ const getAllBookingsByUser = catchAsync(async (req, res) => {
 });
 
 const deleteBooking = catchAsync(async (req, res) => {
-  const { id } = req?.params;
+  const { id } = req.params;
   const result = await bookingServices.deleteBooking(id);
 
   sendResponse(res, {

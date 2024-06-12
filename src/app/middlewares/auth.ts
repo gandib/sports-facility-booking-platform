@@ -5,7 +5,7 @@ import catchAsync from '../utils/catchAsync';
 import config from '../config';
 import { TUserRole } from '../modules/User/user.interface';
 import { User } from '../modules/User/user.model';
-import AuthError from '../errors/AuthError';
+import AuthError from '../errors/authError';
 
 const auth = (...requiredRole: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
@@ -25,7 +25,7 @@ const auth = (...requiredRole: TUserRole[]) => {
       config.jwt_access_secret as string,
     ) as JwtPayload;
 
-    const { role, email, iat } = decoded;
+    const { role, email } = decoded;
 
     //checking if the user is exists
     const user = await User.isUserExistsByCustomId(email);
