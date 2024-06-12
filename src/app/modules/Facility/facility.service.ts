@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/appError';
 import { TFacility } from './facility.interface';
 import { Facility } from './facility.model';
 
@@ -10,6 +12,10 @@ const updateFacility = async (id: string, payload: TFacility) => {
   const result = await Facility.findByIdAndUpdate(id, payload, {
     new: true,
   });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
   return result;
 };
 
@@ -23,11 +29,21 @@ const deleteFacility = async (id: string) => {
       new: true,
     },
   );
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
   return result;
 };
 
 const getAllFacility = async () => {
   const result = await Facility.find();
+
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
   return result;
 };
 

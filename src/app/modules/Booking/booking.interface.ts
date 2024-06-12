@@ -1,5 +1,7 @@
 import { Types } from 'mongoose';
 
+export type TIsBooked = 'confirmed' | 'unconfirmed' | 'canceled';
+
 export type TBooking = {
   date: Date;
   startTime: string;
@@ -7,5 +9,5 @@ export type TBooking = {
   user: Types.ObjectId;
   facility: Types.ObjectId;
   payableAmount: number;
-  isBooked: boolean;
+  isBooked: TIsBooked;
 };
