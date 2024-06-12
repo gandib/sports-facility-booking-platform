@@ -19,4 +19,6 @@ router.get('/user', auth('user'), bookingControllers.getAllBookingsByUser);
 
 router.delete('/:id', auth('user'), bookingControllers.deleteBooking);
 
+router.get('/check-availability', bookingControllers.checkAvailability);
+
 export const bookingRoutes = router;

@@ -11,3 +11,8 @@ export type TBooking = {
   payableAmount: number;
   isBooked: TIsBooked;
 };
+
+export type TTotalSlots = {
+  startTime: string;
+  endTime: string;
+};
