@@ -111,9 +111,7 @@ const deleteBooking = async (id: string) => {
 };
 
 const checkAvailability = async (date: string) => {
-  const newDate = `${date?.split('-')[2]}-${date?.split('-')[1]}-${date?.split('-')[0]}`;
-
-  const queryDate = date ? newDate : new Date().toISOString().slice(0, 10);
+  const queryDate = date || new Date().toISOString().slice(0, 10);
 
   const bookedSlots = await Booking.find({ date: queryDate }).select(
     'startTime endTime',
@@ -133,6 +131,10 @@ const checkAvailability = async (date: string) => {
 
   // Filter the total slots to find available slots
   const availableSlots = totalSlots.filter((slot) => isSlotAvailable(slot));
+
+  if (availableSlots.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
 
   return availableSlots;
 };
