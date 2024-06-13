@@ -51,8 +51,12 @@ const createBooking = async (user: JwtPayload, payload: TBooking) => {
   payload.user = userData?._id;
 
   // create payable amount
-  payload.payableAmount =
-    ((endTimeParse - startTimeParse) / 1000 / 60 / 60) * facility?.pricePerHour;
+  payload.payableAmount = Number(
+    (
+      ((endTimeParse - startTimeParse) / 1000 / 60 / 60) *
+      facility?.pricePerHour
+    ).toFixed(2),
+  );
 
   const result = await Booking.create(payload);
   return result;
@@ -120,8 +124,10 @@ const checkAvailability = async (date: string) => {
   const isSlotAvailable = (slot: TTotalSlots) => {
     for (const booking of bookedSlots) {
       if (
-        slot.startTime <= booking.startTime &&
-        slot.endTime >= booking.endTime
+        (slot.startTime >= booking.startTime &&
+          slot.startTime < booking.endTime) ||
+        (slot.endTime > booking.startTime && slot.endTime <= booking.endTime) ||
+        (slot.startTime <= booking.startTime && slot.endTime >= booking.endTime)
       ) {
         return false;
       }
