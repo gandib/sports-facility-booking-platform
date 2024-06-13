@@ -4,7 +4,7 @@ A comprehensive Sports Facility Booking Platform built with Node.js, Express, Mo
 
 ## Live URL
 
-- [Live URL](vercel server link will be added here)
+- [Live URL](https://sports-facility-booking-platform.vercel.app)
 
 ## Features
 
