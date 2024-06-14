@@ -12,7 +12,7 @@ export type TBooking = {
   isBooked: TIsBooked;
 };
 
-export type TTotalSlots = {
+export type TSlot = {
   startTime: string;
   endTime: string;
 };

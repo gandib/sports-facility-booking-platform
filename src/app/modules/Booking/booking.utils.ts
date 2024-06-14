@@ -1,8 +1,8 @@
-import { TTotalSlots } from './booking.interface';
+import { TSlot } from './booking.interface';
 
 export const hasTimeConflict = (
-  assignedTimeSlots: TTotalSlots[],
-  newTimeSlot: TTotalSlots,
+  assignedTimeSlots: TSlot[],
+  newTimeSlot: TSlot,
 ) => {
   for (const timeSlot of assignedTimeSlots) {
     const existingStartTime = new Date(`1970-01-01T${timeSlot.startTime}`);

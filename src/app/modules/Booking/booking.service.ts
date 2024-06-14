@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken';
-import { TBooking, TTotalSlots } from './booking.interface';
+import { TBooking, TSlot } from './booking.interface';
 import { Booking } from './booking.model';
 import { User } from '../User/user.model';
 import AppError from '../../errors/appError';
@@ -7,7 +7,7 @@ import httpStatus from 'http-status';
 import { Facility } from '../Facility/facility.model';
 import { hasTimeConflict } from './booking.utils';
 import QueryBuilder from '../../builder/QueryBuilder';
-import { bookingSearchableFields, totalSlots } from './booking.constant';
+import { bookingSearchableFields, slot } from './booking.constant';
 
 const createBooking = async (user: JwtPayload, payload: TBooking) => {
   const userData = await User.findOne({ email: user?.email }).select('_id');
@@ -121,22 +121,49 @@ const checkAvailability = async (date: string) => {
     'startTime endTime',
   );
 
-  const isSlotAvailable = (slot: TTotalSlots) => {
-    for (const booking of bookedSlots) {
-      if (
-        (slot.startTime >= booking.startTime &&
-          slot.startTime < booking.endTime) ||
-        (slot.endTime > booking.startTime && slot.endTime <= booking.endTime) ||
-        (slot.startTime <= booking.startTime && slot.endTime >= booking.endTime)
-      ) {
-        return false;
-      }
+  const getAvailableSlots = (slot: TSlot, bookings: TSlot[]) => {
+    // If there are no bookings, return the whole slot
+    if (bookings?.length === 0) {
+      return [slot];
     }
-    return true;
+
+    // Sort bookings by startTime
+    bookings?.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+    const availableSlots = [];
+    let lastEndTime = slot.startTime;
+
+    // Check gaps between main slot start and first booking
+    if (lastEndTime < bookings[0]?.startTime) {
+      availableSlots.push({
+        startTime: lastEndTime,
+        endTime: bookings[0]?.startTime,
+      });
+    }
+
+    // Check gaps between bookings
+    for (let i = 0; i < bookings?.length - 1; i++) {
+      if (bookings[i]?.endTime < bookings[i + 1]?.startTime) {
+        availableSlots.push({
+          startTime: bookings[i]?.endTime,
+          endTime: bookings[i + 1]?.startTime,
+        });
+      }
+      lastEndTime = bookings[i]?.endTime;
+    }
+
+    // Check gap between last booking and main slot end
+    if (bookings[bookings?.length - 1]?.endTime < slot.endTime) {
+      availableSlots.push({
+        startTime: bookings[bookings?.length - 1].endTime,
+        endTime: slot.endTime,
+      });
+    }
+
+    return availableSlots;
   };
 
-  // Filter the total slots to find available slots
-  const availableSlots = totalSlots.filter((slot) => isSlotAvailable(slot));
+  const availableSlots = getAvailableSlots(slot, bookedSlots);
 
   if (availableSlots.length === 0) {
     throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
