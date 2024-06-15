@@ -12,9 +12,4 @@ const facilitySchema = new Schema<TFacility>({
   isDeleted: { type: Boolean, default: false },
 });
 
-facilitySchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
 export const Facility = model<TFacility>('Facility', facilitySchema);

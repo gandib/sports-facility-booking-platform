@@ -53,7 +53,7 @@ const createBooking = async (user: JwtPayload, payload: TBooking) => {
   // create payable amount
   payload.payableAmount = Number(
     (
-      ((endTimeParse - startTimeParse) / 1000 / 60 / 60) *
+      ((endTimeParse - startTimeParse) / 3600000) *
       facility?.pricePerHour
     ).toFixed(2),
   );
