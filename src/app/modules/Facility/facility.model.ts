@@ -9,7 +9,19 @@ const facilitySchema = new Schema<TFacility>({
     required: [true, 'Price per hour is required!'],
   },
   location: { type: String, required: [true, 'Location is required!'] },
+  image: { type: String, required: [true, 'Image is required!'] },
   isDeleted: { type: Boolean, default: false },
+});
+
+// query middleware
+facilitySchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+facilitySchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
 export const Facility = model<TFacility>('Facility', facilitySchema);

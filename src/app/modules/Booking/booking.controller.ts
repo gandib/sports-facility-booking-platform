@@ -51,8 +51,11 @@ const deleteBooking = catchAsync(async (req, res) => {
 });
 
 const checkAvailability = catchAsync(async (req, res) => {
-  const { date } = req.query;
-  const result = await bookingServices.checkAvailability(date as string);
+  const { date, facility } = req.query;
+  const result = await bookingServices.checkAvailability(
+    date as string,
+    facility as string,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

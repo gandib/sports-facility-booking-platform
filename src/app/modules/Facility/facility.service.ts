@@ -1,10 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import AppError from '../../errors/appError';
 import { TFacility } from './facility.interface';
 import { Facility } from './facility.model';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
-const createFacility = async (payload: TFacility) => {
+const createFacility = async (payload: TFacility, file: any) => {
+  if (file) {
+    const imageName = `${payload?.name}`;
+    const path = file?.path;
+
+    // send image to cloudinary
+    const { secure_url } = await sendImageToCloudinary(imageName, path);
+    payload.image = secure_url as string;
+  }
   const result = await Facility.create(payload);
+
   return result;
 };
 

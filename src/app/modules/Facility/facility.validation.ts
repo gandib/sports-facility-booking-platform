@@ -6,19 +6,17 @@ const createFacilityValidationSchema = z.object({
     description: z.string({ required_error: 'Description is required!' }),
     pricePerHour: z.number({ required_error: 'Price per hour is required!' }),
     location: z.string({ required_error: 'Location is required!' }),
+    image: z.string({ required_error: 'Image is required!' }),
   }),
 });
 
 const updateFacilityValidationSchema = z.object({
   body: z.object({
-    name: z.string({ required_error: 'Name is required!' }).optional(),
-    description: z
-      .string({ required_error: 'Description is required!' })
-      .optional(),
-    pricePerHour: z
-      .number({ required_error: 'Price per hour is required!' })
-      .optional(),
-    location: z.string({ required_error: 'Location is required!' }).optional(),
+    name: z.string().optional(),
+    description: z.string().optional(),
+    pricePerHour: z.number().optional(),
+    location: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 

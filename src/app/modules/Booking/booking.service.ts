@@ -114,10 +114,10 @@ const deleteBooking = async (id: string) => {
   return result;
 };
 
-const checkAvailability = async (date: string) => {
+const checkAvailability = async (date: string, facility: string) => {
   const queryDate = date || new Date().toISOString().slice(0, 10);
 
-  const bookedSlots = await Booking.find({ date: queryDate }).select(
+  const bookedSlots = await Booking.find({ date: queryDate, facility }).select(
     'startTime endTime',
   );
 
