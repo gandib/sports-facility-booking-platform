@@ -27,4 +27,15 @@ const bookingSchema = new Schema<TBooking>({
   },
 });
 
+// query middleware
+bookingSchema.pre('find', function (next) {
+  this.find({ isBooked: { $ne: 'canceled' } });
+  next();
+});
+
+bookingSchema.pre('findOne', function (next) {
+  this.find({ isBooked: { $ne: 'canceled' } });
+  next();
+});
+
 export const Booking = model<TBooking>('Booking', bookingSchema);

@@ -38,6 +38,18 @@ const getAllBookingsByUser = catchAsync(async (req, res) => {
   });
 });
 
+const getBookinById = catchAsync(async (req, res) => {
+  const { bookingId } = req.params;
+  const result = await bookingServices.getBookinById(bookingId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Booking retrieved successfully',
+    data: result,
+  });
+});
+
 const deleteBooking = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await bookingServices.deleteBooking(id);
@@ -71,4 +83,5 @@ export const bookingControllers = {
   getAllBookingsByUser,
   deleteBooking,
   checkAvailability,
+  getBookinById,
 };

@@ -17,4 +17,6 @@ router.post(
   userControllers.loginUser,
 );
 
+router.get('/:email', userControllers.getUser);
+
 export const userRoutes = router;

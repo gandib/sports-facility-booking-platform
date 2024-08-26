@@ -70,9 +70,9 @@ const getAllBookings = async (query: Record<string, unknown>) => {
 
   const result = await bookingQuery.modelQuery;
 
-  if (result.length === 0) {
-    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
-  }
+  // if (result.length === 0) {
+  //   throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  // }
 
   return result;
 };
@@ -82,6 +82,7 @@ const getAllBookingsByUser = async (
   user: JwtPayload,
 ) => {
   const userData = await User.findOne({ email: user?.email }).select('_id');
+
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
   }
@@ -93,7 +94,17 @@ const getAllBookingsByUser = async (
 
   const result = await bookingQuery.modelQuery;
 
-  if (result.length === 0) {
+  // if (result.length === 0) {
+  //   throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  // }
+
+  return result;
+};
+
+const getBookinById = async (bookingId: string) => {
+  const result = await Booking.findById(bookingId).populate('facility');
+
+  if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
   }
 
@@ -178,4 +189,5 @@ export const bookingServices = {
   getAllBookingsByUser,
   deleteBooking,
   checkAvailability,
+  getBookinById,
 };

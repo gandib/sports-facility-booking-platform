@@ -11,12 +11,24 @@ class QueryBuilder<T> {
 
   search(searchableFields: string[]) {
     const date = this?.query?.date;
+    const searchTerm = this?.query?.searchTerm;
     if (date) {
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map(
           (field) =>
             ({
               [field]: { $regex: date, $options: 'i' },
+            }) as FilterQuery<T>,
+        ),
+      });
+    }
+
+    if (searchTerm) {
+      this.modelQuery = this.modelQuery.find({
+        $or: searchableFields.map(
+          (field) =>
+            ({
+              [field]: { $regex: searchTerm, $options: 'i' },
             }) as FilterQuery<T>,
         ),
       });

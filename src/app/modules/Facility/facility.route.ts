@@ -30,4 +30,6 @@ router.delete('/:id', auth('admin'), facilityControllers.deleteFacility);
 
 router.get('/', facilityControllers.getAllFacility);
 
+router.get('/:facilityId', facilityControllers.getSingleFacility);
+
 export const facilityRoutes = router;

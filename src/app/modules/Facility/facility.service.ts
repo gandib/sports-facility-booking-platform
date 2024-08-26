@@ -4,6 +4,8 @@ import AppError from '../../errors/appError';
 import { TFacility } from './facility.interface';
 import { Facility } from './facility.model';
 import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { facilitySearchableFields } from './facility.constant';
 
 const createFacility = async (payload: TFacility, file: any) => {
   if (file) {
@@ -48,10 +50,20 @@ const deleteFacility = async (id: string) => {
   return result;
 };
 
-const getAllFacility = async () => {
-  const result = await Facility.find();
+const getAllFacility = async (query: Record<string, unknown>) => {
+  const facilityQuery = new QueryBuilder(Facility.find(), query).search(
+    facilitySearchableFields,
+  );
 
-  if (result.length === 0) {
+  const result = await facilityQuery.modelQuery;
+
+  return result;
+};
+
+const getSingleFacility = async (id: string) => {
+  const result = await Facility.findById(id);
+
+  if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
   }
 
@@ -63,4 +75,5 @@ export const facilityServices = {
   updateFacility,
   deleteFacility,
   getAllFacility,
+  getSingleFacility,
 };
