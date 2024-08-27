@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TBooking } from './booking.interface';
-import { isBooked } from './booking.constant';
+import { isBooked, paymentStatus } from './booking.constant';
 
 const bookingSchema = new Schema<TBooking>({
   date: { type: String, required: [true, 'Date is required!'] },
@@ -25,6 +25,15 @@ const bookingSchema = new Schema<TBooking>({
     },
     default: 'confirmed',
   },
+  paymentStatus: {
+    type: String,
+    enum: {
+      values: paymentStatus,
+      message: '{VALUE} is not valid!',
+    },
+    default: 'unpaid',
+  },
+  transactionId: { type: String },
 });
 
 // query middleware

@@ -51,13 +51,17 @@ const deleteFacility = async (id: string) => {
 };
 
 const getAllFacility = async (query: Record<string, unknown>) => {
-  const facilityQuery = new QueryBuilder(Facility.find(), query).search(
-    facilitySearchableFields,
-  );
+  const facilityQuery = new QueryBuilder(Facility.find(), query)
+    .search(facilitySearchableFields)
+    .paginate();
 
   const result = await facilityQuery.modelQuery;
+  const meta = await facilityQuery.countTotal();
 
-  return result;
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleFacility = async (id: string) => {

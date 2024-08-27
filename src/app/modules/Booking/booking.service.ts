@@ -177,7 +177,7 @@ const checkAvailability = async (date: string, facility: string) => {
   const availableSlots = getAvailableSlots(slot, bookedSlots);
 
   if (availableSlots.length === 0) {
-    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+    throw new AppError(httpStatus.NOT_FOUND, 'No time slots available');
   }
 
   return availableSlots;
