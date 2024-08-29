@@ -8,7 +8,13 @@ const app = express();
 
 // parser
 app.use(express.json());
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
+app.use(
+  // cors(),
+  cors({
+    credentials: true,
+    origin: ['https://sports-smart-booking.vercel.app'],
+  }),
+);
 
 // application routes
 app.use('/api', router);
