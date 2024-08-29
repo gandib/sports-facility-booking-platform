@@ -3,19 +3,10 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/appError';
 import { TFacility } from './facility.interface';
 import { Facility } from './facility.model';
-import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { facilitySearchableFields } from './facility.constant';
 
-const createFacility = async (payload: TFacility, file: any) => {
-  if (file) {
-    const imageName = `${payload?.name}`;
-    const path = file?.path;
-
-    // send image to cloudinary
-    const { secure_url } = await sendImageToCloudinary(imageName, path);
-    payload.image = secure_url as string;
-  }
+const createFacility = async (payload: TFacility) => {
   const result = await Facility.create(payload);
 
   return result;

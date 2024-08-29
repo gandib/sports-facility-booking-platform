@@ -12,7 +12,10 @@ app.use(
   // cors(),
   cors({
     credentials: true,
-    origin: ['https://sports-smart-booking.vercel.app'],
+    origin: [
+      'https://sports-smart-booking.vercel.app',
+      'http://localhost:5173',
+    ],
   }),
 );
 
